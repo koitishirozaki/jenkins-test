@@ -1,8 +1,8 @@
 node {
     checkout scm
     switch (env.BRANCH_NAME) {
-        case 'Portings/Android':
-            stage('[Android] Tag Verification') {
+        case 'main':
+            stage('[Main] Tag Verification') {
                 def tagName = bat(script: 'git describe --tags --exact-match || echo', returnStdout: true).trim()
                 if (!tagName) {
                     currentBuild.result = 'ABORTED'
@@ -13,46 +13,10 @@ node {
                     error("Tag ${tagName} is invalid - Exiting pipeline")
                 }
             }
-
-            stage('[Android] Pre-build') {
-                bat "${env.WORKSPACE}\\Jenkins\\batch\\gitCheckout.bat ${env.WORKSPACE}"
-                bat "${env.WORKSPACE}\\Jenkins\\batch\\updateFMOD.bat ${env.WORKSPACE}"
-                bat "${env.WORKSPACE}\\Jenkins\\batch\\generateCleanSolution.bat ${env.WORKSPACE}"
-                bat "${env.WORKSPACE}\\Jenkins\\batch\\setupAndroidRequirements.bat ${env.WORKSPACE}"
+            stage('[Main] Echo') {
+                echo 'Potato hot'
             }
-
-            stage('[Android] BuildCookRun') {
-                bat "python ${env.WORKSPACE}\\Jenkins\\python\\increment.py"
-                try {
-                    bat "${env.WORKSPACE}\\Jenkins\\batch\\buildProject.bat ${env.WORKSPACE} Shipping Android 1 ${env.WORKSPACE}\\Export"
-                }
-                catch (Exception e) {
-                    echo 'Exception occurred: ' + e.toString()
-                    bat "python ${env.WORKSPACE}\\Jenkins\\python\\decrement.py"
-                }
-            }
-
-            // stage('[Android] Deploy/Archival') {
-            //     archiveArtifacts artifacts: "${env.WORKSPACE}\\Export\\MarkOfTheDeep-*\\Android\\*.aab"
-            //     bat "${env.WORKSPACE}\\Jenkins\\batch\\GitSync.bat ${env.WORKSPACE}"
-            // }
-
-        // stage('[Android] Discord Notifier') {
-        //     discordSend(
-        //         webhookURL: "${DISCORD_WEBHOOK}",
-        //         discordSend description: 'Status of my Project',
-        //         footer: '',
-        //         image: '',
-        //         link: "${env.BUILD_URL}",
-        //         result: currentBuild.currentResult,
-        //         scmWebUrl: '',
-        //         thumbnail: '',
-        //         title: ["${env.TARGET_PLATFORM}"] "${env.JOB_NAME}" - #"${env.BUILD_NUMBER}"
-        //     )
-        // }
-
             break
-
     // case 'main':
     //     // WindowsPipeline()
     //     break
