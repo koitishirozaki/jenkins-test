@@ -1,0 +1,6 @@
+MAIN_VERSION=0.0.0-Win+ffffff
+
+ANDROID_VERSION=0.0.0-Android+ffffff
+STEAM_VERSION=0.0.0-Steam+ffffff
+GOG_VERSION=0.0.0-GOG+ffffff
+EPIC_VERSION=0.0.0-Epic+ffffff
