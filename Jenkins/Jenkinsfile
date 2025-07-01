@@ -1,24 +1,8 @@
 node {
-    checkout scm
     switch (env.BRANCH_NAME) {
-        case 'main':
-            stage('[Main] Tag Verification') {
-                def tagName = bat(script: 'git describe --tags --exact-match || echo', returnStdout: true).trim()
-                if (!tagName) {
-                    currentBuild.result = 'ABORTED'
-                    error('No tag found - Exiting pipeline ')
-                }
-                if (!tagName.startsWith('v')) {
-                    currentBuild.result = 'ABORTED'
-                    error("Tag ${tagName} is invalid - Exiting pipeline")
-                }
-            }
-            stage('[Main] Echo') {
-                echo 'Potato hot'
-            }
+        case 'builds/Thing':
+            checkout scm
+
             break
-    // case 'main':
-    //     // WindowsPipeline()
-    //     break
     }
 }
