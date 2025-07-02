@@ -24,11 +24,13 @@ node {
 
             stage('Overwrite stuff') {
                 bat 'echo ASDSLKJDSAKLDJSAKLDJ > logA.txt'
+                bat 'echo ABACATEEEEEEE > DoSoemthing.txt'
             }
 
             stage('Commit') {
                 withCredentials([gitUsernamePassword(credentialsId: 'koiti-github-pat', gitToolName: 'Default')]) {
                     bat "${env.WORKSPACE}\\Jenkins\\gitsetup.bat"
+                    bat 'git add DoSoemthing.txt'
                     bat "${env.WORKSPACE}\\Jenkins\\commit.bat log${env.BUILD_NUMBER}.txt"
                 }
             }
