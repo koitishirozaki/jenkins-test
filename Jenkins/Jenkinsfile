@@ -22,6 +22,10 @@ node {
                 bat 'type NUL > fck8.txt'
             }
 
+            stage('Overwrite stuff') {
+                bat 'type "ASDSLKJDSAKLDJSAKLDJ" > logA.txt'
+            }
+
             stage('Commit') {
                 withCredentials([gitUsernamePassword(credentialsId: 'koiti-github-pat', gitToolName: 'Default')]) {
                     bat "${env.WORKSPACE}\\Jenkins\\gitsetup.bat"
