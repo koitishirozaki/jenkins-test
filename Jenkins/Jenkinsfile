@@ -15,11 +15,11 @@ node {
 
             stage('Commit') {
                 try {
-                    def GITHASH = env.GIT_COMMIT
+                    def GITHASH = ${ env.GIT_COMMIT }
                     def shorthash = GITHASH.take(7)
                     echo "${shorthash}"
                 } catch (e) {
-                    echo 'short commit hash failed'
+                    echo 'short commit hash failed: ${e.getMessage()}'
                 }
 
                 // try {
