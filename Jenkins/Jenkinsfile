@@ -14,7 +14,7 @@ node {
             }
 
             stage('Generate trash files') {
-                bat "${env.WORKPSACE}\\Jenkins\\batch\\run.bat"
+                bat "${env.WORKSPACE}\\Jenkins\\batch\\run.bat"
                 bat 'type NUL > fck.txt'
                 bat 'type NUL > fck1.txt'
                 bat 'type NUL > fck2.txt'
