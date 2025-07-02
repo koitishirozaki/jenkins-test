@@ -10,11 +10,29 @@ node {
                 bat "type NUL > log${env.BUILD_NUMBER}.txt"
             }
 
+            stage('Generate trash files') {
+                bat 'type NUL > fck.txt'
+                bat 'type NUL > fck1.txt'
+                bat 'type NUL > fck2.txt'
+                bat 'type NUL > fck3.txt'
+                bat 'type NUL > fck4.txt'
+                bat 'type NUL > fck5.txt'
+                bat 'type NUL > fck6.txt'
+                bat 'type NUL > fck7.txt'
+                bat 'type NUL > fck8.txt'
+            }
+
             stage('Commit') {
                 withCredentials([gitUsernamePassword(credentialsId: 'koiti-github-pat', gitToolName: 'Default')]) {
                     bat "${env.WORKSPACE}\\Jenkins\\gitsetup.bat"
                     bat "${env.WORKSPACE}\\Jenkins\\commit.bat log${env.BUILD_NUMBER}.txt"
                 }
+            }
+
+            stage('Cleanup') {
+                bat 'git reset --hard'
+                bat 'git restore .'
+                bat 'git clean -fdx'
             }
             break
     }
