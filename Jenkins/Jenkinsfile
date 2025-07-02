@@ -2,7 +2,19 @@ node {
     switch (env.BRANCH_NAME) {
         case 'builds/Thing':
             checkout scm
+            stage('Checkout') {
+                bat 'dir'
+                bat 'git fetch'
+                bat 'git checkout builds/Thing'
+                bat 'type NUL > log.txt'
+                bat 'dir'
+            }
 
+            stage('Commit') {
+                withCredentials([gitUsernamePassword(credentialsId: 'koiti-github-pat', gitToolName: 'Default')]) {
+                    bat 'commit.bat'
+                }
+            }
             break
     }
 }
