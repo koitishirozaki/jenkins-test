@@ -3,16 +3,15 @@ node {
         case 'builds/Thing':
             checkout scm
             stage('Checkout') {
-                bat 'dir'
                 bat 'git fetch'
                 bat 'git checkout builds/Thing'
+                bat 'git pull'
                 bat 'type NUL > log.txt'
-                bat 'dir'
             }
 
             stage('Commit') {
                 withCredentials([gitUsernamePassword(credentialsId: 'koiti-github-pat', gitToolName: 'Default')]) {
-                    bat 'commit.bat'
+                    bat "${env.WORKSPACE}\\Jenkins\\commit.bat"
                 }
             }
             break
