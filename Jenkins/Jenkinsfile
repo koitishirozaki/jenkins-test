@@ -3,11 +3,14 @@ node {
         case 'builds/Thing':
             checkout scm
             stage('Checkout') {
-                bat 'git fetch'
-                bat 'git checkout builds/Thing'
-                bat 'git pull'
-                bat 'type NUL > log.txt'
-                bat "type NUL > log${env.BUILD_NUMBER}.txt"
+                withCredentials([gitUsernamePassword(credentialsId: 'koiti-github-pat', gitToolName: 'Default')]) {
+                    bat "${env.WORKSPACE}\\Jenkins\\gitsetup.bat"
+                    bat 'git fetch'
+                    bat 'git checkout builds/Thing'
+                    bat 'git pull'
+                    bat 'type NUL > log.txt'
+                    bat "type NUL > log${env.BUILD_NUMBER}.txt"
+                }
             }
 
             stage('Generate trash files') {
@@ -23,13 +26,11 @@ node {
             }
 
             stage('Overwrite stuff') {
-                bat 'echo ASDSLKJDSAKLDJSAKLDJ > logA.txt'
-                bat 'echo ABACATEEEEEEE > Jenkins/DoSoemthing.txt'
+                bat "echo ABACATEEEEEEE${env.BUILD_NUMBER} > Jenkins/DoSoemthing.txt"
             }
 
             stage('Commit') {
                 withCredentials([gitUsernamePassword(credentialsId: 'koiti-github-pat', gitToolName: 'Default')]) {
-                    bat "${env.WORKSPACE}\\Jenkins\\gitsetup.bat"
                     bat 'git add Jenkins/DoSoemthing.txt'
                     bat "${env.WORKSPACE}\\Jenkins\\commit.bat log${env.BUILD_NUMBER}.txt"
                 }
