@@ -23,7 +23,7 @@ node {
             }
 
             stage('Overwrite stuff') {
-                bat 'type "ASDSLKJDSAKLDJSAKLDJ" > logA.txt'
+                bat 'type ASDSLKJDSAKLDJSAKLDJ > logA.txt'
             }
 
             stage('Commit') {
