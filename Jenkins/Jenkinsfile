@@ -15,11 +15,10 @@ node {
 
             stage('Commit') {
                 try {
-                    def GITHASH = ${ env.GIT_COMMIT }
-                    def shorthash = GITHASH.take(7)
-                    echo "${shorthash}"
+                    def GITHASH = bat(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    echo "${GITHASH}"
                 } catch (e) {
-                    echo 'short commit hash failed: ${e.getMessage()}'
+                    echo 'short commit hash failed'
                 }
 
                 // try {
