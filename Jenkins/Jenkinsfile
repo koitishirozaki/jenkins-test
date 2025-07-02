@@ -3,11 +3,10 @@ node {
         case 'builds/Thing':
             checkout scm
             stage('Checkout') {
-                bat 'dir'
                 bat 'git fetch'
+                bat 'git pull builds/Thing origin/builds/Thing'
                 bat 'git checkout builds/Thing'
                 bat 'type NUL > log.txt'
-                bat 'dir'
             }
 
             stage('Commit') {
