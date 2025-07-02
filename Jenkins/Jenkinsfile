@@ -4,8 +4,8 @@ node {
             checkout scm
             stage('Checkout') {
                 bat 'git fetch'
-                bat 'git pull builds/Thing origin/builds/Thing'
                 bat 'git checkout builds/Thing'
+                bat 'git pull'
                 bat 'type NUL > log.txt'
             }
 
