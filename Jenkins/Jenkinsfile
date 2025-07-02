@@ -15,21 +15,21 @@ node {
 
             stage('Commit') {
                 try {
-                    def SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
+                    def SHORT_COMMIT = "${env.GIT_COMMIT[0..7]}"
                     echo "${SHORT_COMMIT}"
                 } catch(e) {
                     echo 'short commit failed'
                 }
 
                 try {
-                    def SHORT_REVISION = "${GIT_REVISION,length=6}"
+                    def SHORT_REVISION = "${env.GIT_REVISION,length=6}"
                     echo "${SHORT_REVISION}"
                 } catch(e) {
                     echo 'short revision failed'
                 }
 
                 try {
-                    def SHORT = "${GIT_REVISION:0:7}"
+                    def SHORT = "${env.GIT_REVISION:0:7}"
                     echo "${SHORT}"
                 } catch(e) {
                     echo 'short failed'
