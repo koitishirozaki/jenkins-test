@@ -34,7 +34,7 @@ node {
                     bat 'git add Jenkins/DoSoemthing.txt'
                     bat "${env.WORKSPACE}\\Jenkins\\commit.bat Jenkins/log${env.BUILD_NUMBER}.txt"
                     bat "git tag -a ${env.BUILD_NUMBER} -m ${env.BUILD_NUMBER}"
-                    bat 'git push'
+                    bat "git push origin ${env.BUILD_NUMBER}"
                 }
             }
 
