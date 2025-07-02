@@ -13,31 +13,54 @@ node {
                 }
             }
 
-            stage('Generate trash files') {
-                bat "${env.WORKSPACE}\\Jenkins\\batch\\run.bat"
-                bat 'type NUL > fck.txt'
-                bat 'type NUL > fck1.txt'
-                bat 'type NUL > fck2.txt'
-                bat 'type NUL > fck3.txt'
-                bat 'type NUL > fck4.txt'
-                bat 'type NUL > fck5.txt'
-                bat 'type NUL > fck6.txt'
-                bat 'type NUL > fck7.txt'
-                bat 'type NUL > fck8.txt'
-            }
-
-            stage('Overwrite stuff') {
-                bat "echo ABACATEEEEEEE${env.BUILD_NUMBER} > Jenkins/DoSoemthing.txt"
-            }
-
             stage('Commit') {
-                withCredentials([gitUsernamePassword(credentialsId: 'koiti-github-pat', gitToolName: 'Default')]) {
-                    bat 'git add Jenkins/DoSoemthing.txt'
-                    bat "${env.WORKSPACE}\\Jenkins\\commit.bat Jenkins/log${env.BUILD_NUMBER}.txt"
-                    bat "git tag -a ${env.BUILD_NUMBER} -m ${env.BUILD_NUMBER}"
-                    bat "git push origin ${env.BUILD_NUMBER}"
+                try {
+                    def SHORT_COMMIT = "${GIT_COMMIT[0..7]}"
+                    echo "${SHORT_COMMIT}"
+                } catch(e) {
+                    echo 'short commit failed'
+                }
+
+                try {
+                    def SHORT_REVISION = "${GIT_REVISION,length=6}"
+                    echo "${SHORT_REVISION}"
+                } catch(e) {
+                    echo 'short revision failed'
+                }
+
+                try {
+                    def SHORT = "${GIT_REVISION:0:7}"
+                    echo "${SHORT}"
+                } catch(e) {
+                    echo 'short failed'
                 }
             }
+
+            // stage('Generate trash files') {
+            //     bat "${env.WORKSPACE}\\Jenkins\\batch\\run.bat"
+            //     bat 'type NUL > fck.txt'
+            //     bat 'type NUL > fck1.txt'
+            //     bat 'type NUL > fck2.txt'
+            //     bat 'type NUL > fck3.txt'
+            //     bat 'type NUL > fck4.txt'
+            //     bat 'type NUL > fck5.txt'
+            //     bat 'type NUL > fck6.txt'
+            //     bat 'type NUL > fck7.txt'
+            //     bat 'type NUL > fck8.txt'
+            // }
+
+            // stage('Overwrite stuff') {
+            //     bat "echo ABACATEEEEEEE${env.BUILD_NUMBER} > Jenkins/DoSoemthing.txt"
+            // }
+
+            // stage('Commit') {
+            //     withCredentials([gitUsernamePassword(credentialsId: 'koiti-github-pat', gitToolName: 'Default')]) {
+            //         bat 'git add Jenkins/DoSoemthing.txt'
+            //         bat "${env.WORKSPACE}\\Jenkins\\commit.bat Jenkins/log${env.BUILD_NUMBER}.txt"
+            //         bat "git tag -a ${env.BUILD_NUMBER} -m ${env.BUILD_NUMBER}"
+            //         bat "git push origin ${env.BUILD_NUMBER}"
+            //     }
+            // }
 
             stage('Cleanup') {
                 bat 'git reset --hard'
