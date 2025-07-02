@@ -12,7 +12,7 @@ node {
 
             stage('Commit') {
                 withCredentials([gitUsernamePassword(credentialsId: 'koiti-github-pat', gitToolName: 'Default')]) {
-                    bat 'commit.bat'
+                    bat '${env.WORKSPACE}\\Jenkins\\commit.bat'
                 }
             }
             break
