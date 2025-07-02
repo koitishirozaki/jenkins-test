@@ -30,7 +30,7 @@ node {
             stage('Commit') {
                 withCredentials([gitUsernamePassword(credentialsId: 'koiti-github-pat', gitToolName: 'Default')]) {
                     bat "${env.WORKSPACE}\\Jenkins\\gitsetup.bat"
-                    bat 'git add DoSoemthing.txt'
+                    bat 'git add Jenkins/DoSoemthing.txt'
                     bat "${env.WORKSPACE}\\Jenkins\\commit.bat log${env.BUILD_NUMBER}.txt"
                 }
             }
