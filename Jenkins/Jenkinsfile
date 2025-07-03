@@ -2,6 +2,7 @@ node {
     switch (env.BRANCH_NAME) {
         case 'builds/Thing':
             checkout scm
+            def SHORT_HASH = ''
             stage('Checkout') {
                 withCredentials([gitUsernamePassword(credentialsId: 'koiti-github-pat', gitToolName: 'Default')]) {
                     bat "${env.WORKSPACE}\\Jenkins\\gitsetup.bat"
@@ -10,11 +11,13 @@ node {
                     bat 'git pull'
                     bat 'type NUL > log.txt'
                     bat "type NUL > log${env.BUILD_NUMBER}.txt"
+                    SHORT_HASH = bat(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                 }
             }
 
             stage('Commit') {
                 try {
+                    echo "${SHORT_HASH}"
                     def GITHASH = bat(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                     echo "${GITHASH}"
                 } catch (e) {
